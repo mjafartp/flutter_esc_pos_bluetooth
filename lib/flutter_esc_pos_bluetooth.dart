@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 
+import 'enums.dart';
+
 class FlutterEscPosBluetooth {
   static const int STATE_OFF = 10;
   static const int STATE_TURNING_ON = 11;
@@ -68,8 +70,15 @@ class FlutterEscPosBluetooth {
 
   Future<dynamic> disconnect() => _channel.invokeMethod('disconnect');
 
-  Future<dynamic> writeBytes(Uint8List message) =>
-      _channel.invokeMethod('writeBytes', {'message': message});
+  Future<dynamic> writeBytes(List<int> message) =>
+      _channel.invokeMethod('writeBytes', {'message': Uint8List.fromList(message)});
+
+  Future<PosPrintResult> printTicket(List<int> message) async{
+    await _channel.invokeMethod(
+        'writeBytes', {'message': Uint8List.fromList(message)});
+
+    return PosPrintResult.success;
+  }
 }
 class BluetoothDevice {
   final String? name;
