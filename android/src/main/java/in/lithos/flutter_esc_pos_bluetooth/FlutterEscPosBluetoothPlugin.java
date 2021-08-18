@@ -29,15 +29,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.EventChannel.StreamHandler;
 import io.flutter.plugin.common.EventChannel.EventSink;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.EventChannel.StreamHandler;
-import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.PluginRegistry.RequestPermissionsResultListener;
 
@@ -57,9 +55,10 @@ public class FlutterEscPosBluetoothPlugin implements MethodCallHandler, RequestP
   private EventSink statusSink;
 
   public static void registerWith(Registrar registrar) {
-    final FlutterEscPosBluetoothPlugin instance = new FlutterEscPosBluetoothPlugin(registrar);
-    registrar.addRequestPermissionsResultListener((PluginRegistry.RequestPermissionsResultListener) instance);
+    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_esc_pos_bluetooth");
+    channel.setMethodCallHandler(new FlutterEscPosBluetoothPlugin(registrar));
   }
+
 
   public FlutterEscPosBluetoothPlugin(Registrar registrar) {
     this.registrar = registrar;
