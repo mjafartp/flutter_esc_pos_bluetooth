@@ -63,8 +63,8 @@ class FlutterEscPosBluetooth {
     return list.map((map) => BluetoothDevice.fromMap(map)).toList();
   }
 
-  Future<dynamic> connect(BluetoothDevice device) =>
-      _channel.invokeMethod('connect', device.toMap());
+  Future<dynamic> connect(String device) =>
+      _channel.invokeMethod('connect', {"address":device});
 
   Future<dynamic> disconnect() => _channel.invokeMethod('disconnect');
 
