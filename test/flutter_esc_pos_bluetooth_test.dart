@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await FlutterEscPosBluetooth.platformVersion, '42');
+    expect(FlutterEscPosBluetooth.CONNECTED, 1);
   });
 }
