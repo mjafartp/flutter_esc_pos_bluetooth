@@ -154,6 +154,14 @@ public class FlutterEscPosBluetoothPlugin implements MethodCallHandler, RequestP
           result.error("invalid_argument", "argument 'message' not found", null);
         }
         break;
+      case "print":
+        if (arguments.containsKey("bytes")) {
+          final Map<String, Object> args = call.arguments();
+          print(result, args);
+        } else {
+          result.error("invalid_argument", "argument 'message' not found", null);
+        }
+        break;
       default:
         result.notImplemented();
         break;
@@ -256,6 +264,27 @@ public class FlutterEscPosBluetoothPlugin implements MethodCallHandler, RequestP
 
     try {
       THREAD.write(message);
+      result.success(true);
+    } catch (Exception ex) {
+      //Log.e(TAG, ex.getMessage(), ex);
+      result.error("write_error", ex.getMessage(), exceptionToString(ex));
+    }
+  }
+  private void print(Result result, Map<String, Object> message) {
+    if (THREAD == null) {
+      result.error("write_error", "not connected", null);
+      return;
+    }
+
+    try {
+      final ArrayList<Integer> bytess = (ArrayList<Integer>) message.get("bytes");
+
+      byte[] bytes = new byte[bytess.size()];
+      for (int i = 0; i < bytess.size(); i++) {
+        bytes[i] = (byte) bytess.get(i).intValue();
+      }
+
+      THREAD.write(bytes);
       result.success(true);
     } catch (Exception ex) {
       //Log.e(TAG, ex.getMessage(), ex);

@@ -75,8 +75,7 @@ class FlutterEscPosBluetooth {
 
   Future<PosPrintResult> printTicket(List<int> message) async{
     await _channel.invokeMethod(
-        'writeBytes', {'message': Uint8List.fromList(message)});
-
+        'print', {'bytes':message});
     return PosPrintResult.success;
   }
 }

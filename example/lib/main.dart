@@ -185,7 +185,7 @@ class _MyAppState extends State<MyApp> {
       bluetooth.isConnected.then((isConnected) {
         if (!(isConnected??false)) {
           print(_device);
-          bluetooth.connect(_device??BluetoothDevice.fromMap({'name':'None','address':''})).catchError((error) {
+          bluetooth.connect(_device!.address??'').catchError((error) {
             setState(() => _connected = false);
           });
           setState(() => _connected = true);
