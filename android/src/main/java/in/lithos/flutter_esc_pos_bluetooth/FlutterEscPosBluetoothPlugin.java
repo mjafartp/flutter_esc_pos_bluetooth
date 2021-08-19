@@ -329,11 +329,7 @@ public class FlutterEscPosBluetoothPlugin implements MethodCallHandler, RequestP
 
     public void write(byte[] bytes) {
       try {
-        int len = bytes.length;
-//        byte[] buffer = new byte[8192];
-        while (true) {
-          outputStream.write(bytes, 0, len);
-        }
+        outputStream.write(bytes);
       } catch (IOException e) {
         e.printStackTrace();
       }
