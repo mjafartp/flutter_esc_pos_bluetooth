@@ -53,6 +53,7 @@ public class FlutterEscPosBluetoothPlugin implements MethodCallHandler, RequestP
 
   private EventSink readSink;
   private EventSink statusSink;
+  BluetoothSocket socket;
 
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_esc_pos_bluetooth");
@@ -213,7 +214,7 @@ public class FlutterEscPosBluetoothPlugin implements MethodCallHandler, RequestP
           return;
         }
 
-        BluetoothSocket socket = device.createRfcommSocketToServiceRecord(MY_UUID);
+        socket = device.createRfcommSocketToServiceRecord(MY_UUID);
 
         if (socket == null) {
           result.error("connect_error", "socket connection not established", null);
@@ -284,7 +285,8 @@ public class FlutterEscPosBluetoothPlugin implements MethodCallHandler, RequestP
         bytes[i] = (byte) bytess.get(i).intValue();
       }
 
-      THREAD.write(bytes);
+      socket.getOutputStream().write(bytes);
+
       result.success(true);
     } catch (Exception ex) {
       //Log.e(TAG, ex.getMessage(), ex);
